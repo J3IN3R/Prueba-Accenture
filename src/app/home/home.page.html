@@ -68,29 +68,27 @@
     Es la optimización clave para manejar cientos/miles de tareas sin
     degradar el scroll ni el uso de memoria.
   -->
-  <ion-list *ngIf="categories$ | async as categories">
-    <ion-virtual-scroll [items]="(tasks$ | async) ?? []" approxItemHeight="64px">
-      <ion-item *virtualItem="let task; trackBy: trackById" lines="full">
-        <ion-checkbox
-          slot="start"
-          [checked]="task.completed"
-          (ionChange)="toggleCompleted(task)">
-        </ion-checkbox>
-        <ion-label [class.completed]="task.completed">
-          <h2>{{ task.title }}</h2>
-          <ion-note [style.color]="(categories | categoryLookup:task.categoryId)?.color ?? '#888888'">
-            {{ (categories | categoryLookup:task.categoryId)?.name ?? 'Sin categoría' }}
-          </ion-note>
-        </ion-label>
-        <ion-button
-          fill="clear"
-          color="danger"
-          slot="end"
-          (click)="deleteTask(task)">
-          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-        </ion-button>
-      </ion-item>
-    </ion-virtual-scroll>
+ <ion-list *ngIf="categories$ | async as categories">
+    <ion-item *ngFor="let task of (tasks$ | async) ?? []; trackBy: trackById" lines="full">
+      <ion-checkbox
+        slot="start"
+        [checked]="task.completed"
+        (ionChange)="toggleCompleted(task)">
+      </ion-checkbox>
+      <ion-label [class.completed]="task.completed">
+        <h2>{{ task.title }}</h2>
+        <ion-note [style.color]="(categories | categoryLookup:task.categoryId)?.color ?? '#888888'">
+          {{ (categories | categoryLookup:task.categoryId)?.name ?? 'Sin categoría' }}
+        </ion-note>
+      </ion-label>
+      <ion-button
+        fill="clear"
+        color="danger"
+        slot="end"
+        (click)="deleteTask(task)">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
   </ion-list>
 
 </ion-content>
