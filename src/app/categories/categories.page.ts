@@ -10,7 +10,7 @@ const DEFAULT_COLORS = ['#3880ff', '#2dd36f', '#ffc409', '#eb445a', '#92949c'];
   selector: 'app-categories',
   templateUrl: './categories.page.html',
   styleUrls: ['./categories.page.scss'],
-  changeDetectionStrategy: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoriesPage {
   categories$ = this.categoryService.categories$;
