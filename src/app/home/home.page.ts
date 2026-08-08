@@ -15,7 +15,7 @@ import { Category } from '../models/category.model';
   // OnPush: la vista solo se re-renderiza cuando cambian los observables
   // (async pipe) o los @Input, no en cada ciclo de digest de Angular.
   // Reduce notablemente el trabajo de change detection con listas grandes.
-  changeDetectionStrategy: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePage {
   newTaskTitle = '';
