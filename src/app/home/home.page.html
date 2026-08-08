@@ -1,0 +1,96 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Mis tareas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/categories">
+        <ion-icon slot="icon-only" name="pricetags-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Alta de tarea -->
+  <ion-item lines="full">
+    <ion-input
+      placeholder="Nueva tarea..."
+      [(ngModel)]="newTaskTitle"
+      (keyup.enter)="addTask()">
+    </ion-input>
+  </ion-item>
+
+  <ion-item lines="full" *ngIf="categories$ | async as categories">
+    <ion-select
+      label="Categoría"
+      placeholder="Sin categoría"
+      [(ngModel)]="newTaskCategoryId">
+      <ion-select-option [value]="null">Sin categoría</ion-select-option>
+      <ion-select-option *ngFor="let c of categories" [value]="c.id">
+        {{ c.name }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-button expand="block" class="ion-margin-top" (click)="addTask()">
+    Agregar tarea
+  </ion-button>
+
+  <!-- Filtro por categoría -->
+  <ion-chip
+    *ngIf="(activeFilter$ | async) as active"
+    color="tertiary"
+    (click)="filterByCategory(null)">
+    Quitar filtro ✕
+  </ion-chip>
+
+  <ion-segment
+    scrollable
+    [value]="(activeFilter$ | async) ?? 'all'"
+    *ngIf="categories$ | async as categories">
+    <ion-segment-button value="all" (click)="filterByCategory(null)">
+      <ion-label>Todas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button
+      *ngFor="let c of categories"
+      [value]="c.id"
+      (click)="filterByCategory(c.id)">
+      <ion-label>{{ c.name }}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <p class="feature-flag-note" *ngIf="enableTaskSorting$ | async">
+    ⚙️ Feature flag activo: agrupando tareas por categoría (Remote Config)
+  </p>
+
+  <!--
+    ion-virtual-scroll: solo renderiza los nodos DOM visibles en pantalla.
+    Es la optimización clave para manejar cientos/miles de tareas sin
+    degradar el scroll ni el uso de memoria.
+  -->
+  <ion-list *ngIf="categories$ | async as categories">
+    <ion-virtual-scroll [items]="(tasks$ | async) ?? []" approxItemHeight="64px">
+      <ion-item *virtualItem="let task; trackBy: trackById" lines="full">
+        <ion-checkbox
+          slot="start"
+          [checked]="task.completed"
+          (ionChange)="toggleCompleted(task)">
+        </ion-checkbox>
+        <ion-label [class.completed]="task.completed">
+          <h2>{{ task.title }}</h2>
+          <ion-note [style.color]="(categories | categoryLookup:task.categoryId)?.color ?? '#888888'">
+            {{ (categories | categoryLookup:task.categoryId)?.name ?? 'Sin categoría' }}
+          </ion-note>
+        </ion-label>
+        <ion-button
+          fill="clear"
+          color="danger"
+          slot="end"
+          (click)="deleteTask(task)">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-virtual-scroll>
+  </ion-list>
+
+</ion-content>
