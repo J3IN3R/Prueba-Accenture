@@ -125,10 +125,3 @@ src/app/
 6. **Firebase Remote Config con caché y valores por defecto**: si el fetch
    remoto falla (sin red), la app sigue funcionando con el `defaultConfig`
    local, evitando bloqueos en el arranque.
-
-## Notas
-
-- La rama de trabajo sugerida es `feature/categorias-remote-config`.
-- Antes de la entrevista: sube capturas/video corto mostrando alta de tarea,
-  categorías, filtro y el cambio de comportamiento al activar/desactivar el
-  feature flag desde la consola de Firebase.
