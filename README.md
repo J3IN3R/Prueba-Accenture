@@ -1,4 +1,8 @@
-# To-Do App con Categorías (Ionic + Angular + Cordova + Firebase Remote Config)
+# To-Do App con Categorías (Ionic + Angular + Cordova + Firebase Remote Config).
+
+## Video demo
+
+https://youtube.com/shorts/193pFJjbPVM?si=Hk8SP4k3q4L4klnK
 
 ## Qué incluye
 
